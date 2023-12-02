@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { doc, getDoc, getFirestore } from 'firebase/firestore/lite';
 import express from 'express';
+import bodyParser from "body-parser";
 
 const app = express();
 const firebaseConfig = {
