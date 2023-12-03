@@ -4,7 +4,7 @@ import express from 'express';
 import bodyParser from "body-parser";
 
 const app = express();
-const firebaseConfig = {
+const firebase = initializeApp({
     apiKey: "AIzaSyCDQz7AqwNzzxVUrIh0crqCRh6yi3M8iIw",
     authDomain: "grocery-compass.firebaseapp.com",
     projectId: "grocery-compass",
@@ -12,8 +12,7 @@ const firebaseConfig = {
     messagingSenderId: "372646887147",
     appId: "1:372646887147:web:5e8defcfeffc46833d48ae",
     measurementId: "G-8MLG35J267"
-};
-const firebase = initializeApp(firebaseConfig);
+});
 const db = getFirestore(firebase);
 
 // create an array of items, use them as args for my function inside app.get()
@@ -25,15 +24,6 @@ app.post('/', bodyParser.json(), async (req, res) => {
     var cheapestItems = compareCheapestItemsAcrossStores(cheapestTJList, cheapestSafewayList);
     console.log("Cheapest:", cheapestItems);
     res.json(cheapestItems);
-
-    // const docRef = doc(db, "safeway-test", "milk");
-    // const docSnap = await getDoc(docRef);
-
-    // if (docSnap.exists()) {
-    //     res.json(docSnap.data().price);
-    // } else {
-    //     res.json("None");
-    // }
 })
 
 const port = process.env.port || 8080;
