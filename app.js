@@ -20,6 +20,7 @@ const db = getFirestore(firebase);
 // return res.json() - the arg will be the resulting object from 
 app.post('/', bodyParser.json(), async (req, res) => {
     var groceryList = req.body;
+    console.log("Request data:", req.body);
     var cheapestTJList = await getItems(groceryList, 'Trader Joes');
     var cheapestSafewayList = await getItems(groceryList, 'Safeway');
     var cheapestItems = compareCheapestItemsAcrossStores(cheapestTJList, cheapestSafewayList);
