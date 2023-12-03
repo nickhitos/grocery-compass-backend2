@@ -87,9 +87,9 @@ async function getItems(itemsList, store) {
 
     // Sort inventory based on price
     inventory.sort((a, b) => {
-        a = parseFloat(a.price);
-        b = parseFloat(b.price);
-        return a - b;
+        a.price = parseFloat(a.price);
+        b.price = parseFloat(b.price);
+        return a.price - b.price;
     });
 
 	// For each grocery item, find the cheapest one
