@@ -26,7 +26,7 @@ app.post('/', bodyParser.json(), async (req, res) => {
     // console.log("Cheapest:", cheapestItems);
     // res.json(cheapestItems);
 
-    console.log("Data:", req.body.email);
+    console.log("Data:", req.body);
 	res.json({ message: "hello there" });
 
     // const docRef = doc(db, "safeway-test", "milk");
