@@ -4,25 +4,29 @@ import express from "express";
 import bodyParser from "body-parser";
 
 const app = express();
-const firebase = initializeApp({
-	apiKey: "AIzaSyCDQz7AqwNzzxVUrIh0crqCRh6yi3M8iIw",
-	authDomain: "grocery-compass.firebaseapp.com",
-	projectId: "grocery-compass",
-	storageBucket: "grocery-compass.appspot.com",
-	messagingSenderId: "372646887147",
-	appId: "1:372646887147:web:5e8defcfeffc46833d48ae",
-	measurementId: "G-8MLG35J267",
-});
-const db = getFirestore(firebase);
+const db = getFirestore(
+	initializeApp({
+		apiKey: "AIzaSyCDQz7AqwNzzxVUrIh0crqCRh6yi3M8iIw",
+		authDomain: "grocery-compass.firebaseapp.com",
+		projectId: "grocery-compass",
+		storageBucket: "grocery-compass.appspot.com",
+		messagingSenderId: "372646887147",
+		appId: "1:372646887147:web:5e8defcfeffc46833d48ae",
+		measurementId: "G-8MLG35J267",
+	})
+);
 
 // create an array of items, use them as args for my function inside app.get()
 // return res.json() - the arg will be the resulting object from
 app.post("/", bodyParser.json(), async (req, res) => {
-	var groceryList = req.body;
-    console.log("req.body:", req.body);
-	var cheapestTJList = await getItems(groceryList, "Trader Joes");
-	var cheapestSafewayList = await getItems(groceryList, "Safeway");
-	var cheapestItems = compareCheapestItemsAcrossStores(
+	let groceryList = req.body;
+
+	groceryList = ["apple", "milk"]
+
+	console.log("req.body:", req.body);
+	let cheapestTJList = await getItems(groceryList, "Trader Joes");
+	let cheapestSafewayList = await getItems(groceryList, "Safeway");
+	let cheapestItems = compareCheapestItemsAcrossStores(
 		cheapestTJList,
 		cheapestSafewayList
 	);
@@ -79,12 +83,12 @@ async function getItems(itemsList, store) {
 	});
 
 	// For each grocery item, find the cheapest one
+	let n = inventory.length;
 	itemsList.forEach((item) => {
-		let n = inventory.length;
 		for (let i = 0; i < n; i++) {
 			let inventoryItem = inventory[i];
 			if (inventoryItem.name.toLowerCase().includes(item.toLowerCase())) {
-				cheapestOfEachItem.push(inventoryItem);
+				cheapestOfEachItem.push({...inventoryItem, "store": store});
 				return;
 			}
 		}
@@ -108,6 +112,6 @@ function compareCheapestItemsAcrossStores(
 		.concat(cheapestItemsTraderJoes)
 		.sort((a, b) => a.price - b.price);
 	const overallCheapestItems = combined.slice(0, 5);
-    console.log("overallCheapestItems:", overallCheapestItems);
+	console.log("overallCheapestItems:", overallCheapestItems);
 	return overallCheapestItems;
 }
