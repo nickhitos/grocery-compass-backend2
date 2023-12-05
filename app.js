@@ -23,12 +23,18 @@ app.post("/", bodyParser.json(), async (req, res) => {
 	console.log("req.body:", req.body);
 	let cheapestTJList = await getItems(groceryList, "Trader Joes");
 	let cheapestSafewayList = await getItems(groceryList, "Safeway");
+	let cheapestWholeFoodsList = await getItems(groceryList, "Whole Foods");
 	let cheapestItems = compareCheapestItemsAcrossStores(
 		cheapestTJList,
 		cheapestSafewayList
 	);
-	console.log("cheapestItems:", cheapestItems);
-	res.json(cheapestItems);
+	let cheapestItems2 = compareCheapestItemsAcrossStores(
+		cheapestItems,
+		cheapestWholeFoodsList
+	);
+
+	console.log("cheapestItems:", cheapestItems2);
+	res.json(cheapestItems2);
 });
 
 const port = process.env.port || 8080;
@@ -57,6 +63,11 @@ async function getItems(itemsList, store) {
 	// Get Safeway collection
 	if (store.localeCompare("Safeway") == 0) {
 		docRef = doc(db, "stored_by_array_large_test", "safeway0");
+	}
+
+	// Get Whole Foods collection
+	if (store.localeCompare("Whole Foods") == 0) {
+		docRef = doc(db, "wholefood_stored_by_array_test", "wholefood0");
 	}
 
 	const docSnap = await getDoc(docRef);
