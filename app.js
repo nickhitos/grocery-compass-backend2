@@ -104,7 +104,7 @@ function compareCheapestItemsAcrossStores(
 	cheapestItemsTraderJoes,
 	cheapestItemsSafeway
 ) {
-	combined = cheapestItemsSafeway
+	let combined = cheapestItemsSafeway
 		.concat(cheapestItemsTraderJoes)
 		.sort((a, b) => a.price - b.price);
 	const overallCheapestItems = combined.slice(0, 5);
