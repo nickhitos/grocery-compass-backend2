@@ -20,9 +20,6 @@ const db = getFirestore(
 // return res.json() - the arg will be the resulting object from
 app.post("/", bodyParser.json(), async (req, res) => {
 	let groceryList = req.body;
-
-	groceryList = ["apple", "milk"]
-
 	console.log("req.body:", req.body);
 	let cheapestTJList = await getItems(groceryList, "Trader Joes");
 	let cheapestSafewayList = await getItems(groceryList, "Safeway");
